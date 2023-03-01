@@ -40,17 +40,52 @@ export class DynamicFormComponent implements OnInit {
 
     this.form.forEach((field: any) => {
 
-      for(let v of field.validations) {
-        let error = this.validate(field.value, v)
-        console.log(error)
-        if(error) {
-          field.errorMessage = error
-          break
+      this.checkRules(field)
+      this.checkErrors(field)
+
+    });
+  }
+
+  checkRules(field: any) {
+    if(!field.rules) return
+
+    field.rules.forEach((rule: any) => {
+
+      if(rule.type === 'VISIBILITY') {
+        console.log(this.getValue(rule.when))
+        if(this.getValue(rule.when) === rule.equalTo) {
+          field.visibility = true
+          field.validations = rule.validations
         } else {
+          field.visibility = false
+          field.validations = []
           field.errorMessage = ''
         }
       }
-    });
+
+    })
+  }
+
+  getValue(id: any) {
+    for(let field of this.form) {
+      if(field.id === id) {
+        return field.value
+      }
+    }
+    return null
+  }
+
+  checkErrors(field: any) {
+    for(let v of field.validations) {
+      let error = this.validate(field.value, v)
+      console.log(error)
+      if(error) {
+        field.errorMessage = error
+        break
+      } else {
+        field.errorMessage = ''
+      }
+    }
   }
 
 
@@ -69,7 +104,7 @@ export class DynamicFormComponent implements OnInit {
   }
 
   requiredValidation(value: any) {
-    if(!value) {
+    if(value === null || value === undefined) {
       return false
     } else {
       return true

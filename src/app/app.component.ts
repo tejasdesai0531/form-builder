@@ -17,7 +17,8 @@ export class AppComponent {
       value: null,
       validations: ['REQUIRED'],
       errorMessage: '',
-      isTouched: false
+      isTouched: false,
+      visibility: true
     },
     {
       id: 'code',
@@ -27,7 +28,8 @@ export class AppComponent {
       value: null,
       validations: ['REQUIRED'],
       errorMessage: '',
-      isTouched: false
+      isTouched: false,
+      visibility: true
     },
     {
       id: 'status',
@@ -42,7 +44,27 @@ export class AppComponent {
       value: null,
       validations: ['REQUIRED'],
       errorMessage: '',
-      isTouched: false
+      isTouched: false,
+      visibility: true
+    },
+    {
+      id: 'image',
+      label: 'Image',
+      placeholder: 'Please Enter Image URL',
+      field_type: 'INPUT',
+      value: null,
+      validations: [],
+      errorMessage: '',
+      isTouched: false,
+      rules: [
+        {
+          type: 'VISIBILITY',
+          when: 'status',
+          equalTo: true,
+          validations: ['REQUIRED']
+        }
+      ],
+      visibility: false
     }
   ]
 }
