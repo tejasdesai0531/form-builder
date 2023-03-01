@@ -1,0 +1,31 @@
+<div>
+
+  <div *ngFor="let field of form">
+
+    <div *ngIf="field.field_type === 'INPUT'">
+      <input
+        type="text"
+        [placeholder]="field.placeholder"
+        [(ngModel)]="field.value"
+        (keydown)="valueChanges($event, field)"
+        (blur)="valueChanges($event, field)">
+      <p *ngIf="field.isTouched" style="color: red;">{{field.errorMessage}}</p>
+    </div>
+
+    <div *ngIf="field.field_type === 'SELECT'">
+      <ng-select
+        [placeholder]="field.placeholder"
+        [multiple]="field.multiple"
+        [(ngModel)]="field.value"
+        (blur)="valueChanges($event, field)"
+      >
+        <ng-option *ngFor="let option of field.options" [value]="option.value">{{option.text}}</ng-option>
+     </ng-select>
+     <p *ngIf="field.isTouched" style="color: red;">{{field.errorMessage}}</p>
+    </div>
+
+  </div>
+
+</div>
+
+<button (click)="submit()">Submit</button>
